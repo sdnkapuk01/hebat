@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Administrasi Digital — SD Negeri Kapuk 01</title>
+  <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1RLtSahDI8fZunGk7ckE_YznaAVGlQShh&sz=w128" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brokenwhite: '#F7F9FC',
+            navy: {
+              800: '#102A43',
+              900: '#0A192F',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Latar broken white dengan aksen gradien biru lembut */
+    body {
+      background-color: #F7F9FC;
+      background-image:
+        radial-gradient(circle at 0% 0%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(30, 58, 138, 0.08) 0%, transparent 45%);
+      min-height: 100vh;
+    }
+
+    /* Watermark halus identitas sekolah di latar belakang */
+    .watermark-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.035;
+      overflow: hidden;
+    }
+
+    /* Animasi masuk toast notification di kanan atas */
+    @keyframes slideInRight {
+      from {
+        transform: translateX(110%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast-enter {
+      animation: slideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-sky-100 selection:text-sky-900">
+
+  <!-- Watermark Halus Latar Belakang -->
+  <div class="watermark-bg" aria-hidden="true">
+    <div class="text-center select-none transform -rotate-12">
+      <div class="text-6xl sm:text-8xl font-extrabold tracking-widest text-slate-900">SD NEGERI KAPUK 01</div>
+      <div class="text-2xl sm:text-4xl font-bold tracking-wider text-slate-800 mt-2">DINAS PENDIDIKAN PROVINSI DKI JAKARTA</div>
+    </div>
+  </div>
+
+  <!-- Container Toast Notification (Kanan Atas, Non-blocking) -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- Header Utama Portal dengan Gradien Biru Muda ke Biru Tua -->
+  <header class="relative z-10 bg-gradient-to-r from-sky-600 via-blue-700 to-slate-900 text-white shadow-lg border-b border-blue-400/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+        <!-- Identitas Sekolah & Dinas -->
+        <div class="flex items-center gap-3.5 sm:gap-4">
+          <!-- Emblem Jaya Raya (Paling Kiri dengan Box) -->
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/95 p-1.5 shadow-md border border-white/40 flex items-center justify-center shrink-0">
+            <img
+              src="https://drive.google.com/thumbnail?id=1LuNk7b7Yx0RNAelJOUYEGudaDHPi0Zby&sz=w256"
+              alt="Logo Jaya Raya DKI Jakarta"
+              class="w-full h-full object-contain"
+              onerror="this.onerror=null; this.src='https://placehold.co/80x80/ffffff/0f172a?text=DKI';"
+            />
+          </div>
+
+          <!-- Logo SD Negeri Kapuk 01 (Sebelah Kanan Logo DKI dengan Box) -->
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/95 p-1.5 shadow-md border border-white/40 flex items-center justify-center shrink-0">
+            <img
+              src="https://drive.google.com/thumbnail?id=1RLtSahDI8fZunGk7ckE_YznaAVGlQShh&sz=w256"
+              alt="Logo SD Negeri Kapuk 01"
+              class="w-full h-full object-contain"
+              onerror="this.onerror=null; this.src='https://placehold.co/80x80/ffffff/0f172a?text=SDN+01';"
+            />
+          </div>
+
+          <!-- Teks Identitas Resmi -->
+          <div class="min-w-0">
+            <p class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-sky-200">
+              Dinas Pendidikan Provinsi DKI Jakarta
+            </p>
+            <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-white leading-tight truncate">
+              Portal Administrasi Digital — SD Negeri Kapuk 01
+            </h1>
+            <p class="text-xs text-blue-100/90 mt-0.5 truncate">
+              Jl. Kapuk Raya No. 48A, Kel. Kapuk, Kec. Cengkareng, Kota Adm. Jakarta Barat
+            </p>
+          </div>
+        </div>
+
+        <!-- Kontrol Role Akses & Waktu -->
+        <div class="flex flex-wrap items-center justify-between sm:justify-end gap-3 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl px-3.5 py-2.5">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="live-date" class="text-xs font-medium text-blue-50"></span>
+          </div>
+
+          <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
+
+          <!-- Pemilih Simulasi Level Akses -->
+          <div class="flex items-center gap-2">
+            <label for="role-selector" class="text-xs text-sky-200 font-medium">Akses:</label>
+            <select
+              id="role-selector"
+              onchange="changeUserRole(this.value)"
+              class="bg-slate-900/70 text-white text-xs font-semibold rounded-xl px-3 py-1.5 border border-white/20 focus:outline-none focus:ring-2 focus:ring-sky-300 cursor-pointer"
+            >
+              <option value="admin">Admin (TU Utama)</option>
+              <option value="operator">Operator / Staf TU</option>
+              <option value="viewer">Viewer (Kepala Sekolah)</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Konten Utama Portal -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-7">
+
+    <!-- 1. Baris Kartu Statistik Utama -->
+    <section aria-label="Statistik Administrasi Sekolah">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- Kartu Statistik 1: Jumlah GTK Aktif -->
+        <div class="bg-white/95 backdrop-blur rounded-2xl p-4 sm:p-5 border border-emerald-200/70 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah GTK Aktif</p>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h2 id="stat-gtk" class="text-3xl font-extrabold text-slate-900">—</h2>
+                <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Pegawai</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5">Sumber tab <span class="font-semibold text-emerald-700">GTK</span></p>
+            </div>
+            <div class="p-3 rounded-xl bg-emerald-50 text-emerald-700 shrink-0">
+              <i data-lucide="id-card" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kartu Statistik 2: Jumlah Siswa Aktif -->
+        <div class="bg-white/95 backdrop-blur rounded-2xl p-4 sm:p-5 border border-blue-200/70 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah Siswa Aktif</p>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h2 id="stat-siswa" class="text-3xl font-extrabold text-slate-900">—</h2>
+                <span class="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">Peserta Didik</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5">Sumber tab <span class="font-semibold text-blue-700">DATA MURID</span></p>
+            </div>
+            <div class="p-3 rounded-xl bg-blue-50 text-blue-700 shrink-0">
+              <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kartu Statistik 3: Jumlah Surat Masuk -->
+        <div class="bg-white/95 backdrop-blur rounded-2xl p-4 sm:p-5 border border-rose-200/70 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah Surat Masuk</p>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h2 id="stat-surat-masuk" class="text-3xl font-extrabold text-slate-900">—</h2>
+                <span class="text-xs font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">Agenda</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5">Tab <span class="font-semibold text-rose-700">Surat Masuk, SK &amp; Peraturan</span></p>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-50 text-rose-700 shrink-0">
+              <i data-lucide="inbox" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kartu Statistik 4: Jumlah Surat Keluar -->
+        <div class="bg-white/95 backdrop-blur rounded-2xl p-4 sm:p-5 border border-indigo-200/70 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah Surat Keluar</p>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h2 id="stat-surat-keluar" class="text-3xl font-extrabold text-slate-900">—</h2>
+                <span class="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">Agenda</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5">Seluruh tab buku agenda keluar</p>
+            </div>
+            <div class="p-3 rounded-xl bg-indigo-50 text-indigo-700 shrink-0">
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. Kelompok Modul Aplikasi Utama (5 Aplikasi Terintegrasi) -->
+    <section aria-label="Daftar Aplikasi Sekolah" class="space-y-6">
+
+      <!-- Kelompok A: Kesiswaan & Kepegawaian -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-sky-500 to-blue-800"></span>
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900">Kepegawaian &amp; Kesiswaan</h2>
+              <p class="text-xs text-slate-500">Pengelolaan database induk peserta didik, mutasi, serta guru &amp; tenaga kependidikan</p>
+            </div>
+          </div>
+          <span id="badge-role-1" class="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+            Akses Penuh (Kelola &amp; Mutasi)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+
+          <!-- Aplikasi 1: Data Kesiswaan -->
+          <a
+            href="https://sdnkapuk01.github.io/kesiswaan/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="handleModuleLaunch(event, 'Data Kesiswaan', 'https://sdnkapuk01.github.io/kesiswaan/')"
+            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-blue-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-sky-50/80 hover:border-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <i data-lucide="users" class="w-6 h-6"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-800 transition-colors">
+                    Data Kesiswaan
+                  </h3>
+                  <i data-lucide="arrow-up-right" class="w-5 h-5 text-slate-400 group-hover:text-blue-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                  Kelola biodata murid per rombel, surat mutasi masuk/keluar, serta pemindahan siswa ke tab PD_KELUAR.
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-end text-xs">
+              <span class="font-semibold text-slate-700 group-hover:text-blue-700">Buka Aplikasi &rarr;</span>
+            </div>
+          </a>
+
+          <!-- Aplikasi 2: Data Kepegawaian -->
+          <a
+            href="https://sdnkapuk01.github.io/kepegawaian/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="handleModuleLaunch(event, 'Data Kepegawaian', 'https://sdnkapuk01.github.io/kepegawaian/')"
+            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-emerald-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-emerald-50/80 hover:border-emerald-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <i data-lucide="briefcase" class="w-6 h-6"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
+                    Data Kepegawaian
+                  </h3>
+                  <i data-lucide="arrow-up-right" class="w-5 h-5 text-slate-400 group-hover:text-emerald-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                  Administrasi GTK, cetak Surat Tugas guru &amp; tendik, serta penyusunan DUK format Folio (21 &times; 33 cm).
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-end text-xs">
+              <span class="font-semibold text-slate-700 group-hover:text-emerald-700">Buka Aplikasi &rarr;</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Kelompok B: Persuratan & Perangkat Sekolah -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-rose-500 to-slate-800"></span>
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900">Persuratan &amp; Generator Dokumen</h2>
+              <p class="text-xs text-slate-500">Buku agenda surat masuk, agenda surat keluar, dan generator naskah soal sekolah</p>
+            </div>
+          </div>
+          <span id="badge-role-2" class="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
+            Akses Penuh (Input &amp; Arsip)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+
+          <!-- Aplikasi 3: Agenda Surat Masuk -->
+          <a
+            href="https://sdnkapuk01.github.io/surat-masuk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="handleModuleLaunch(event, 'Agenda Surat Masuk', 'https://sdnkapuk01.github.io/surat-masuk/')"
+            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-rose-200/80 bg-gradient-to-br from-rose-50/70 via-white to-slate-100/70 hover:border-rose-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <div class="flex items-start gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-600 to-slate-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <i data-lucide="inbox" class="w-5 h-5"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-1.5">
+                  <h3 class="text-base font-bold text-slate-900 group-hover:text-rose-700 transition-colors">
+                    Agenda Surat Masuk
+                  </h3>
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-rose-600 shrink-0"></i>
+                </div>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                  Registrasi Surat Masuk, SK, dan Peraturan beserta disposisi dan arsip digital dokumen masuk.
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-end text-xs">
+              <span class="font-semibold text-slate-700 group-hover:text-rose-700">Buka Aplikasi &rarr;</span>
+            </div>
+          </a>
+
+          <!-- Aplikasi 4: Agenda Surat Keluar -->
+          <a
+            href="https://sdnkapuk01.github.io/surat-keluar/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="handleModuleLaunch(event, 'Agenda Surat Keluar', 'https://sdnkapuk01.github.io/surat-keluar/')"
+            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-indigo-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-blue-100/60 hover:border-blue-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <div class="flex items-start gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <i data-lucide="send" class="w-5 h-5"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-1.5">
+                  <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-900 transition-colors">
+                    Agenda Surat Keluar
+                  </h3>
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-blue-800 shrink-0"></i>
+                </div>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                  Registrasi Surat Tugas, Surat Umum (mutasi murid), dan penomoran resmi surat keluar sekolah.
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-end text-xs">
+              <span class="font-semibold text-slate-700 group-hover:text-blue-900">Buka Aplikasi &rarr;</span>
+            </div>
+          </a>
+
+          <!-- Aplikasi 5: Generator Soal -->
+          <a
+            href="https://sdnkapuk01.github.io/generator-soal/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="handleModuleLaunch(event, 'Generator Soal', 'https://sdnkapuk01.github.io/generator-soal/')"
+            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-amber-200/80 bg-gradient-to-br from-amber-50/70 via-white to-sky-50/60 hover:border-amber-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <div class="flex items-start gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-600 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-1.5">
+                  <h3 class="text-base font-bold text-slate-900 group-hover:text-amber-800 transition-colors">
+                    Generator Soal
+                  </h3>
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-amber-700 shrink-0"></i>
+                </div>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                  Penyusunan naskah Ulangan Harian dan Tugas Kelas sesuai Kelas, Matpel, dan CP pada kertas Folio.
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-end text-xs">
+              <span class="font-semibold text-slate-700 group-hover:text-amber-800">Buka Aplikasi &rarr;</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 3. Panel Bawah: Log Navigasi & Standar Operasional Administrasi -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+      <!-- Kolom Kiri (4 kolom): Riwayat Akses Sesi Ini -->
+      <div class="lg:col-span-4 bg-white/95 backdrop-blur rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="history" class="w-5 h-5 text-blue-700"></i>
+            <h3 class="text-base font-bold text-slate-900">Log Navigasi Modul</h3>
+          </div>
+          <span class="text-[11px] font-medium text-slate-400">Sesi ini</span>
+        </div>
+        <ul id="activity-log" class="space-y-2.5 text-xs sm:text-sm">
+          <li class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="text-slate-700 font-medium">Portal Administrasi Terpadu siap digunakan</span>
+            <span class="text-xs text-slate-400 shrink-0 ml-2">Baru saja</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Kolom Kanan (8 kolom): Standar Operasional Administrasi -->
+      <div class="lg:col-span-8 bg-white/95 backdrop-blur rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-700"></i>
+            <h3 class="text-base font-bold text-slate-900">Standar Operasional Administrasi</h3>
+          </div>
+          <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700">SOP Aktif</span>
+        </div>
+
+        <div class="space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p>
+              <strong class="text-slate-900">Mutasi Keluar Siswa :</strong> Data siswa mutasi dipindahkan ke tab <code class="text-blue-800 font-semibold">PD_KELUAR</code> melalui konfirmasi eksplisit, untuk diinput / dicocokkan dengan DAPODIK.
+            </p>
+          </div>
+
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p>
+              <strong class="text-slate-900">Surat Penugasan Guru &amp; Tendik :</strong> Penerbitan Surat Tugas dilakukan melalui menu <em>Cetak Surat Tugas</em> pada laman <strong>Data Kepegawaian</strong>, kemudian diinput ke laman <em>Surat Tugas</em> pada <strong>Agenda Surat Keluar</strong>.
+            </p>
+          </div>
+
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p>
+              <strong class="text-slate-900">Surat Mutasi Murid Keluar &amp; Masuk :</strong> Penerbitan Surat Mutasi Murid Keluar dan Masuk dilakukan pada <em>Laman Input Surat Mutasi Keluar &amp; Surat Mutasi Masuk</em> pada laman <strong>Data Kesiswaan</strong>, kemudian diinput ke laman <em>Surat Umum</em> pada <strong>Agenda Surat Keluar</strong>.
+            </p>
+          </div>
+
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p>
+              <strong class="text-slate-900">Generator Soal :</strong> Untuk pembuatan soal Ulangan Harian dan Tugas di Kelas, pastikan <strong>Kelas</strong>, <strong>Matpel</strong>, dan <strong>CP</strong> yang diinput sudah sesuai.
+            </p>
+          </div>
+
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+            <p>
+              <strong class="text-slate-900">Standar Cetak Resmi Folio / A4 :</strong> Dokumen DUK dan naskah soal menggunakan ukuran kertas <strong>Folio (21 &times; 33 cm)</strong>, selain itu menggunakan ukuran kertas <strong>A4</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-4 border-t border-slate-200/80 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+    <p>&copy; <span id="year-now"></span> <strong>SD Negeri Kapuk 01</strong> — Tata Usaha &amp; Administrasi Sekolah Digital.</p>
+    <p>Kecamatan Cengkareng, Kota Administrasi Jakarta Barat</p>
+  </footer>
+
+  <script>
+    // Inisialisasi ikon Lucide
+    lucide.createIcons();
+
+    // Tampilkan tanggal Indonesia (dd mmmm yyyy) dan tahun berjalan
+    function initIndonesianDate() {
+      const months = [
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const now = new Date();
+      const dayName = days[now.getDay()];
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mmmm = months[now.getMonth()];
+      const yyyy = now.getFullYear();
+
+      document.getElementById('live-date').textContent = `${dayName}, ${dd} ${mmmm} ${yyyy}`;
+      document.getElementById('year-now').textContent = yyyy;
+    }
+
+    // Toast notification non-blocking di pojok kanan atas
+    function showToast(title, message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      const styles = {
+        info: 'bg-slate-900/95 text-white border-sky-400/40',
+        success: 'bg-emerald-900/95 text-white border-emerald-400/40',
+        warning: 'bg-amber-900/95 text-white border-amber-400/40',
+      };
+
+      toast.className = `toast-enter pointer-events-auto rounded-2xl border px-4 py-3 shadow-xl backdrop-blur-md flex items-start gap-3 ${styles[type] || styles.info}`;
+      toast.innerHTML = `
+        <div class="mt-0.5 text-sky-300">
+          <i data-lucide="bell-ring" class="w-4 h-4"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-bold tracking-wide">${title}</p>
+          <p class="text-xs text-slate-200 mt-0.5 leading-snug">${message}</p>
+        </div>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons({ nodes: [toast] });
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(20px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 260);
+      }, 3200);
+    }
+
+    // Simulasi pergantian role pengguna dan pembaruan badge hak akses
+    function changeUserRole(role) {
+      const badge1 = document.getElementById('badge-role-1');
+      const badge2 = document.getElementById('badge-role-2');
+
+      if (role === 'admin') {
+        badge1.textContent = 'Akses Penuh (Kelola & Mutasi)';
+        badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200';
+        badge2.textContent = 'Akses Penuh (Input & Arsip)';
+        badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200';
+        showToast('Mode Admin Aktif', 'Hak akses penuh untuk pengelolaan data induk, mutasi PD_KELUAR, dan arsip.', 'success');
+      } else if (role === 'operator') {
+        badge1.textContent = 'Operator (Input & Pembaruan)';
+        badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
+        badge2.textContent = 'Operator (Input Agenda & Soal)';
+        badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
+        showToast('Mode Operator Aktif', 'Akses input dan pembaruan data sesuai bidang tugas.', 'info');
+      } else {
+        badge1.textContent = 'Read-Only (Pantau & Unduh Rekap)';
+        badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200';
+        badge2.textContent = 'Read-Only (Pantau Agenda)';
+        badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200';
+        showToast('Mode Viewer Aktif', 'Tampilan pemantauan pimpinan tanpa perubahan database.', 'warning');
+      }
+    }
+
+    // Mencatat navigasi saat pengguna membuka salah satu aplikasi
+    function handleModuleLaunch(event, moduleName, url) {
+      const logList = document.getElementById('activity-log');
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+      const item = document.createElement('li');
+      item.className = 'flex items-center justify-between p-3 rounded-xl bg-blue-50/70 border border-blue-100';
+      item.innerHTML = `
+        <span class="text-slate-800 font-medium">Membuka modul <strong>${moduleName}</strong></span>
+        <span class="text-xs font-semibold text-blue-700 shrink-0 ml-2">${timeStr} WIB</span>
+      `;
+
+      logList.prepend(item);
+      if (logList.children.length > 6) {
+        logList.removeChild(logList.lastElementChild);
+      }
+
+      showToast(`Membuka ${moduleName}`, 'Membuka aplikasi pada tab baru browser.', 'info');
+    }
+
+    // Fungsi pembantu untuk memperbarui angka statistik real-time dari Google Sheets
+    function updateDashboardStats(stats = {}) {
+      if (stats.gtk !== undefined) document.getElementById('stat-gtk').textContent = stats.gtk;
+      if (stats.siswa !== undefined) document.getElementById('stat-siswa').textContent = stats.siswa;
+      if (stats.suratMasuk !== undefined) document.getElementById('stat-surat-masuk').textContent = stats.suratMasuk;
+      if (stats.suratKeluar !== undefined) document.getElementById('stat-surat-keluar').textContent = stats.suratKeluar;
+    }
+
+    // Tempelkan URL Web App Google Apps Script Anda di bawah ini agar 4 statistik tampil 100% akurat
+    const STATS_GAS_URL = 'PASTE_URL_WEB_APP_GAS_ANDA_DI_SINI';
+
+    async function loadLiveStatsFromSheets() {
+      if (!STATS_GAS_URL || STATS_GAS_URL.includes('PASTE_URL')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${STATS_GAS_URL}?action=getPortalStats`);
+        const result = await response.json();
+
+        if (result && result.status === 'success') {
+          updateDashboardStats({
+            gtk: result.data.gtkAktif,
+            siswa: result.data.siswaAktif,
+            suratMasuk: result.data.suratMasuk,
+            suratKeluar: result.data.suratKeluar,
+          });
+        }
+      } catch (error) {
+        showToast('Sinkronisasi Statistik', 'Gagal memuat rekap terbaru dari Google Sheets.', 'warning');
+      }
+    }
+
+    // Jalankan saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', () => {
+      initIndonesianDate();
+      loadLiveStatsFromSheets();
+    });
+  </script>
+</body>
+</html>
