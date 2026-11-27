@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Administrasi Digital SD Negeri Kapuk 01</title>
+  <title>Portal Administrasi Digital — SD Negeri Kapuk 01</title>
   <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1RLtSahDI8fZunGk7ckE_YznaAVGlQShh&sz=w128" />
 
   <!-- Tailwind CSS -->
@@ -89,6 +89,64 @@
   <!-- Container Toast Notification (Kanan Atas, Non-blocking) -->
   <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
 
+  <!-- Modal Login Sekali Masuk (SSO Lokal 12 Jam) -->
+  <div id="login-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 relative overflow-hidden">
+      <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-sky-500 via-blue-700 to-slate-900"></div>
+
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 p-1.5 flex items-center justify-center shrink-0">
+          <img
+            src="https://drive.google.com/thumbnail?id=1RLtSahDI8fZunGk7ckE_YznaAVGlQShh&sz=w128"
+            alt="Logo SD Negeri Kapuk 01"
+            class="w-full h-full object-contain"
+          />
+        </div>
+        <div>
+          <h2 class="text-base sm:text-lg font-extrabold text-slate-900">Masuk Sistem Administrasi</h2>
+          <p class="text-xs text-slate-500">Sesi berlaku 12 jam di seluruh modul sekolah</p>
+        </div>
+      </div>
+
+      <form id="login-form" onsubmit="submitPortalLogin(event)" class="space-y-4">
+        <div>
+          <label for="login-username" class="block text-xs font-semibold text-slate-700 mb-1.5">Username / Email Akun</label>
+          <input
+            type="text"
+            id="login-username"
+            required
+            autocomplete="username"
+            placeholder="Contoh: admin.tu atau nama@gmail.com"
+            class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+          />
+        </div>
+
+        <div>
+          <label for="login-pin" class="block text-xs font-semibold text-slate-700 mb-1.5">PIN / Kata Sandi</label>
+          <input
+            type="password"
+            id="login-pin"
+            required
+            autocomplete="current-password"
+            placeholder="Masukkan PIN akses"
+            class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+          />
+        </div>
+
+        <p id="login-error-msg" class="hidden text-xs font-medium text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2"></p>
+
+        <button
+          type="submit"
+          id="btn-login-submit"
+          class="w-full rounded-xl bg-gradient-to-r from-blue-700 to-slate-900 hover:from-blue-800 hover:to-slate-950 text-white font-semibold text-sm py-2.5 px-4 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Masuk &amp; Aktifkan Sesi 12 Jam</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Header Utama Portal dengan Gradien Biru Muda ke Biru Tua -->
   <header class="relative z-10 bg-gradient-to-r from-sky-600 via-blue-700 to-slate-900 text-white shadow-lg border-b border-blue-400/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
@@ -122,7 +180,7 @@
               Dinas Pendidikan Provinsi DKI Jakarta
             </p>
             <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-white leading-tight truncate">
-              Portal Administrasi Digital SD Negeri Kapuk 01
+              Portal Administrasi Digital — SD Negeri Kapuk 01
             </h1>
             <p class="text-xs text-blue-100/90 mt-0.5 truncate">
               Jl. Kapuk Raya No. 48A, Kel. Kapuk, Kec. Cengkareng, Kota Adm. Jakarta Barat
@@ -139,18 +197,22 @@
 
           <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
 
-          <!-- Pemilih Simulasi Level Akses -->
-          <div class="flex items-center gap-2">
-            <label for="role-selector" class="text-xs text-sky-200 font-medium">Akses:</label>
-            <select
-              id="role-selector"
-              onchange="changeUserRole(this.value)"
-              class="bg-slate-900/70 text-white text-xs font-semibold rounded-xl px-3 py-1.5 border border-white/20 focus:outline-none focus:ring-2 focus:ring-sky-300 cursor-pointer"
+          <!-- Info Sesi Pengguna Aktif & Tombol Keluar -->
+          <div class="flex items-center gap-2.5">
+            <div class="text-right">
+              <p id="active-user-name" class="text-xs font-bold text-white leading-tight">Belum Login</p>
+              <p id="active-user-role" class="text-[11px] text-sky-200 leading-tight">Memeriksa sesi...</p>
+            </div>
+            <button
+              id="btn-session-action"
+              type="button"
+              onclick="handleSessionButtonClick()"
+              title="Keluar / Ganti Akun"
+              class="inline-flex items-center gap-1.5 bg-slate-900/75 hover:bg-rose-700/90 text-white text-xs font-semibold rounded-xl px-3 py-1.5 border border-white/20 transition-colors cursor-pointer"
             >
-              <option value="admin">Admin (TU Utama)</option>
-              <option value="operator">Operator / Staf TU</option>
-              <option value="viewer">Viewer (Kepala Sekolah)</option>
-            </select>
+              <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+              <span id="btn-session-label">Keluar</span>
+            </button>
           </div>
         </div>
 
@@ -258,11 +320,13 @@
 
           <!-- Aplikasi 1: Data Kesiswaan -->
           <a
+            id="card-kesiswaan"
+            data-module="kesiswaan"
             href="https://sdnkapuk01.github.io/kesiswaan/"
             target="_blank"
             rel="noopener noreferrer"
-            onclick="handleModuleLaunch(event, 'Data Kesiswaan', 'https://sdnkapuk01.github.io/kesiswaan/')"
-            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-blue-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-sky-50/80 hover:border-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            onclick="handleModuleLaunch(event, 'Data Kesiswaan', 'kesiswaan', 'https://sdnkapuk01.github.io/kesiswaan/')"
+            class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-blue-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-sky-50/80 hover:border-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
@@ -287,11 +351,13 @@
 
           <!-- Aplikasi 2: Data Kepegawaian -->
           <a
+            id="card-kepegawaian"
+            data-module="kepegawaian"
             href="https://sdnkapuk01.github.io/kepegawaian/"
             target="_blank"
             rel="noopener noreferrer"
-            onclick="handleModuleLaunch(event, 'Data Kepegawaian', 'https://sdnkapuk01.github.io/kepegawaian/')"
-            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-emerald-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-emerald-50/80 hover:border-emerald-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            onclick="handleModuleLaunch(event, 'Data Kepegawaian', 'kepegawaian', 'https://sdnkapuk01.github.io/kepegawaian/')"
+            class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-emerald-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-emerald-50/80 hover:border-emerald-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
@@ -336,11 +402,13 @@
 
           <!-- Aplikasi 3: Agenda Surat Masuk -->
           <a
+            id="card-surat-masuk"
+            data-module="surat-masuk"
             href="https://sdnkapuk01.github.io/surat-masuk/"
             target="_blank"
             rel="noopener noreferrer"
-            onclick="handleModuleLaunch(event, 'Agenda Surat Masuk', 'https://sdnkapuk01.github.io/surat-masuk/')"
-            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-rose-200/80 bg-gradient-to-br from-rose-50/70 via-white to-slate-100/70 hover:border-rose-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            onclick="handleModuleLaunch(event, 'Agenda Surat Masuk', 'surat-masuk', 'https://sdnkapuk01.github.io/surat-masuk/')"
+            class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-rose-200/80 bg-gradient-to-br from-rose-50/70 via-white to-slate-100/70 hover:border-rose-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="flex items-start gap-3.5">
               <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-600 to-slate-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
@@ -365,11 +433,13 @@
 
           <!-- Aplikasi 4: Agenda Surat Keluar -->
           <a
+            id="card-surat-keluar"
+            data-module="surat-keluar"
             href="https://sdnkapuk01.github.io/surat-keluar/"
             target="_blank"
             rel="noopener noreferrer"
-            onclick="handleModuleLaunch(event, 'Agenda Surat Keluar', 'https://sdnkapuk01.github.io/surat-keluar/')"
-            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-indigo-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-blue-100/60 hover:border-blue-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            onclick="handleModuleLaunch(event, 'Agenda Surat Keluar', 'surat-keluar', 'https://sdnkapuk01.github.io/surat-keluar/')"
+            class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-indigo-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-blue-100/60 hover:border-blue-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="flex items-start gap-3.5">
               <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
@@ -394,11 +464,13 @@
 
           <!-- Aplikasi 5: Generator Soal -->
           <a
+            id="card-generator-soal"
+            data-module="generator-soal"
             href="https://sdnkapuk01.github.io/generator-soal/"
             target="_blank"
             rel="noopener noreferrer"
-            onclick="handleModuleLaunch(event, 'Generator Soal', 'https://sdnkapuk01.github.io/generator-soal/')"
-            class="group relative flex flex-col justify-between rounded-2xl p-5 border border-amber-200/80 bg-gradient-to-br from-amber-50/70 via-white to-sky-50/60 hover:border-amber-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            onclick="handleModuleLaunch(event, 'Generator Soal', 'generator-soal', 'https://sdnkapuk01.github.io/generator-soal/')"
+            class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-amber-200/80 bg-gradient-to-br from-amber-50/70 via-white to-sky-50/60 hover:border-amber-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
           >
             <div class="flex items-start gap-3.5">
               <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-600 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
@@ -558,34 +630,162 @@
       }, 3200);
     }
 
-    // Simulasi pergantian role pengguna dan pembaruan badge hak akses
-    function changeUserRole(role) {
+    // Konstanta kunci sesi bersama (dapat dibaca seluruh sub-halaman di sdnkapuk01.github.io)
+    const SESSION_STORAGE_KEY = 'sdnkapuk01_portal_session_v1';
+    const SESSION_DURATION_MS = 12 * 60 * 60 * 1000; // 12 Jam
+
+    // URL Web App Google Apps Script terpusat
+    const STATS_GAS_URL = 'https://script.google.com/macros/s/AKfycbwiB5TLmOtNLQnmy0cy8uXjTKdiya9rz8Va-9hx8JYJtFKJJGFYClWqMWYhcfkq0X1Wuw/exec';
+
+    function getActiveSession() {
+      try {
+        const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+        if (!raw) return null;
+        const session = JSON.parse(raw);
+        if (!session || !session.token || Date.now() > session.expiresAt) {
+          localStorage.removeItem(SESSION_STORAGE_KEY);
+          return null;
+        }
+        return session;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function openLoginModal() {
+      const modal = document.getElementById('login-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('login-error-msg').classList.add('hidden');
+      setTimeout(() => document.getElementById('login-username').focus(), 100);
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('login-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function submitPortalLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('login-username').value.trim();
+      const pin = document.getElementById('login-pin').value.trim();
+      const errorBox = document.getElementById('login-error-msg');
+      const btnSubmit = document.getElementById('btn-login-submit');
+
+      errorBox.classList.add('hidden');
+      btnSubmit.disabled = true;
+      btnSubmit.classList.add('opacity-70');
+
+      try {
+        const url = `${STATS_GAS_URL}?action=loginUser&username=${encodeURIComponent(username)}&pin=${encodeURIComponent(pin)}`;
+        const response = await fetch(url);
+        const result = await response.json();
+
+        if (result && result.status === 'success') {
+          const sessionPayload = {
+            token: result.data.token,
+            username: result.data.username,
+            nama: result.data.nama,
+            role: result.data.role, // 'admin' | 'operator' | 'viewer'
+            allowedModules: result.data.allowedModules, // ['ALL'] atau ['kesiswaan', 'surat-keluar']
+            expiresAt: Date.now() + SESSION_DURATION_MS,
+          };
+
+          localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionPayload));
+          document.getElementById('login-form').reset();
+          closeLoginModal();
+          applySessionUI(sessionPayload);
+          showToast('Login Berhasil', `Selamat datang, ${sessionPayload.nama}. Sesi aktif selama 12 jam.`, 'success');
+        } else {
+          errorBox.textContent = (result && result.message) || 'Username atau PIN tidak valid.';
+          errorBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        errorBox.textContent = 'Gagal terhubung ke server autentikasi GAS. Periksa koneksi internet.';
+        errorBox.classList.remove('hidden');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove('opacity-70');
+      }
+    }
+
+    function handleSessionButtonClick() {
+      const session = getActiveSession();
+      if (session) {
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+        applySessionUI(null);
+        openLoginModal();
+        showToast('Sesi Diakhiri', 'Anda telah keluar dari Portal Administrasi.', 'info');
+      } else {
+        openLoginModal();
+      }
+    }
+
+    // Menerapkan hak akses UI & mengunci modul di luar wewenang operator
+    function applySessionUI(session) {
       const badge1 = document.getElementById('badge-role-1');
       const badge2 = document.getElementById('badge-role-2');
+      const userNameEl = document.getElementById('active-user-name');
+      const userRoleEl = document.getElementById('active-user-role');
+      const btnLabel = document.getElementById('btn-session-label');
+      const cards = document.querySelectorAll('.module-card');
+
+      if (!session) {
+        userNameEl.textContent = 'Tamu (Belum Login)';
+        userRoleEl.textContent = 'Silakan masuk untuk akses';
+        btnLabel.textContent = 'Masuk';
+        cards.forEach((card) => card.classList.add('opacity-50', 'pointer-events-none'));
+        return;
+      }
+
+      userNameEl.textContent = session.nama;
+      btnLabel.textContent = 'Keluar';
+
+      const role = String(session.role || 'viewer').toLowerCase();
+      const allowed = Array.isArray(session.allowedModules) ? session.allowedModules : ['ALL'];
+      const isAllAllowed = role === 'admin' || allowed.includes('ALL');
+
+      cards.forEach((card) => {
+        const modKey = card.getAttribute('data-module');
+        if (isAllAllowed || allowed.includes(modKey)) {
+          card.classList.remove('opacity-50', 'pointer-events-none', 'grayscale');
+        } else {
+          card.classList.add('opacity-50', 'pointer-events-none', 'grayscale');
+        }
+      });
 
       if (role === 'admin') {
+        userRoleEl.textContent = 'Admin (Akses Penuh • 12 Jam)';
         badge1.textContent = 'Akses Penuh (Kelola & Mutasi)';
         badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200';
         badge2.textContent = 'Akses Penuh (Input & Arsip)';
         badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200';
-        showToast('Mode Admin Aktif', 'Hak akses penuh untuk pengelolaan data induk, mutasi PD_KELUAR, dan arsip.', 'success');
       } else if (role === 'operator') {
-        badge1.textContent = 'Operator (Input & Pembaruan)';
+        userRoleEl.textContent = 'Operator / Staf TU (Sesi 12 Jam)';
+        badge1.textContent = 'Operator (Sesuai Wewenang Modul)';
         badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
         badge2.textContent = 'Operator (Input Agenda & Soal)';
         badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
-        showToast('Mode Operator Aktif', 'Akses input dan pembaruan data sesuai bidang tugas.', 'info');
       } else {
+        userRoleEl.textContent = 'Viewer / Pimpinan (Read-Only)';
         badge1.textContent = 'Read-Only (Pantau & Unduh Rekap)';
         badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200';
         badge2.textContent = 'Read-Only (Pantau Agenda)';
         badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200';
-        showToast('Mode Viewer Aktif', 'Tampilan pemantauan pimpinan tanpa perubahan database.', 'warning');
       }
     }
 
     // Mencatat navigasi saat pengguna membuka salah satu aplikasi
-    function handleModuleLaunch(event, moduleName, url) {
+    function handleModuleLaunch(event, moduleName, moduleKey, url) {
+      const session = getActiveSession();
+      if (!session) {
+        event.preventDefault();
+        openLoginModal();
+        showToast('Sesi Berakhir', 'Silakan login kembali untuk membuka modul.', 'warning');
+        return;
+      }
+
       const logList = document.getElementById('activity-log');
       const now = new Date();
       const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -593,7 +793,7 @@
       const item = document.createElement('li');
       item.className = 'flex items-center justify-between p-3 rounded-xl bg-blue-50/70 border border-blue-100';
       item.innerHTML = `
-        <span class="text-slate-800 font-medium">Membuka modul <strong>${moduleName}</strong></span>
+        <span class="text-slate-800 font-medium">${session.nama} membuka <strong>${moduleName}</strong></span>
         <span class="text-xs font-semibold text-blue-700 shrink-0 ml-2">${timeStr} WIB</span>
       `;
 
@@ -602,7 +802,7 @@
         logList.removeChild(logList.lastElementChild);
       }
 
-      showToast(`Membuka ${moduleName}`, 'Membuka aplikasi pada tab baru browser.', 'info');
+      showToast(`Membuka ${moduleName}`, `Sesi ${session.role.toUpperCase()} diteruskan otomatis.`, 'info');
     }
 
     // Fungsi pembantu untuk memperbarui angka statistik real-time dari Google Sheets
@@ -612,9 +812,6 @@
       if (stats.suratMasuk !== undefined) document.getElementById('stat-surat-masuk').textContent = stats.suratMasuk;
       if (stats.suratKeluar !== undefined) document.getElementById('stat-surat-keluar').textContent = stats.suratKeluar;
     }
-
-    // Tempelkan URL Web App Google Apps Script Anda di bawah ini agar 4 statistik tampil 100% akurat
-    const STATS_GAS_URL = 'https://script.google.com/macros/s/AKfycbwiB5TLmOtNLQnmy0cy8uXjTKdiya9rz8Va-9hx8JYJtFKJJGFYClWqMWYhcfkq0X1Wuw/exec';
 
     async function loadLiveStatsFromSheets() {
       if (!STATS_GAS_URL || STATS_GAS_URL.includes('PASTE_URL')) {
@@ -641,6 +838,11 @@
     // Jalankan saat halaman dimuat
     window.addEventListener('DOMContentLoaded', () => {
       initIndonesianDate();
+      const session = getActiveSession();
+      applySessionUI(session);
+      if (!session) {
+        openLoginModal();
+      }
       loadLiveStatsFromSheets();
     });
   </script>
