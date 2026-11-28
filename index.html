@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Administrasi Digital SDN Kapuk 01</title>
+  <title>Portal Administrasi Digital SD Negeri Kapuk 01</title>
   <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1RLtSahDI8fZunGk7ckE_YznaAVGlQShh&sz=w128" />
 
   <!-- Tailwind CSS -->
@@ -125,7 +125,7 @@
               Portal Administrasi Digital
             </h1>
             <p class="text-xs text-blue-100/90 mt-0.5 truncate">
-              Jl. Kapuk Raya No. 48, Cengkareng - Jakarta Barat
+              Jl. Kapuk Raya No. 48A, Kel. Kapuk, Kec. Cengkareng, Kota Adm. Jakarta Barat
             </p>
           </div>
         </div>
@@ -337,22 +337,22 @@
             </div>
           </div>
 
-          <!-- Kelompok B: Persuratan & Perangkat Sekolah -->
+          <!-- Kelompok B: Persuratan -->
           <div class="bg-white/90 backdrop-blur rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
               <div class="flex items-center gap-2.5">
                 <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-rose-500 to-slate-800"></span>
                 <div>
-                  <h2 class="text-base sm:text-lg font-bold text-slate-900">Persuratan &amp; Generator Dokumen</h2>
-                  <p class="text-xs text-slate-500">Buku agenda surat masuk, agenda surat keluar, dan generator naskah soal sekolah</p>
+                  <h2 class="text-base sm:text-lg font-bold text-slate-900">Persuratan</h2>
+                  <p class="text-xs text-slate-500">Buku agenda surat masuk dan agenda surat keluar sekolah</p>
                 </div>
               </div>
-              <span id="badge-role-2" class="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
-                Generator Soal Terbuka Publik
+              <span id="badge-role-2" class="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                Terkunci (Login Diperlukan)
               </span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <!-- Aplikasi 3: Agenda Surat Masuk -->
               <a
@@ -362,15 +362,15 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 onclick="handleModuleLaunch(event, 'Agenda Surat Masuk', 'surat-masuk', 'https://sdnkapuk01.github.io/surat-masuk/')"
-                class="module-card group relative flex flex-col justify-between rounded-2xl p-4 sm:p-5 border border-rose-200/80 bg-gradient-to-br from-rose-50/70 via-white to-slate-100/70 hover:border-rose-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 opacity-50 pointer-events-none grayscale select-none"
+                class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-rose-200/80 bg-gradient-to-br from-rose-50/70 via-white to-slate-100/70 hover:border-rose-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 opacity-50 pointer-events-none grayscale select-none"
               >
-                <div class="flex items-start gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-600 to-slate-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <div class="flex items-start gap-3.5">
+                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-600 to-slate-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                     <i data-lucide="inbox" class="w-5 h-5"></i>
                   </div>
                   <div class="min-w-0 flex-1">
-                    <div class="flex items-center justify-between gap-1">
-                      <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-rose-700 transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                      <h3 class="text-base font-bold text-slate-900 group-hover:text-rose-700 transition-colors">
                         Agenda Surat Masuk
                       </h3>
                       <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-rose-600 shrink-0"></i>
@@ -382,9 +382,9 @@
                 </div>
                 <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-between text-xs">
                   <span class="lock-status inline-flex items-center gap-1 text-slate-500 font-medium">
-                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> Terkunci
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> Terkunci sebelum login
                   </span>
-                  <span class="font-semibold text-slate-700 group-hover:text-rose-700">Buka &rarr;</span>
+                  <span class="font-semibold text-slate-700 group-hover:text-rose-700">Buka Aplikasi &rarr;</span>
                 </div>
               </a>
 
@@ -396,15 +396,15 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 onclick="handleModuleLaunch(event, 'Agenda Surat Keluar', 'surat-keluar', 'https://sdnkapuk01.github.io/surat-keluar/')"
-                class="module-card group relative flex flex-col justify-between rounded-2xl p-4 sm:p-5 border border-indigo-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-blue-100/60 hover:border-blue-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 opacity-50 pointer-events-none grayscale select-none"
+                class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-indigo-200/80 bg-gradient-to-br from-[#FFFDF7] via-white to-blue-100/60 hover:border-blue-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 opacity-50 pointer-events-none grayscale select-none"
               >
-                <div class="flex items-start gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-900 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <div class="flex items-start gap-3.5">
+                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                     <i data-lucide="send" class="w-5 h-5"></i>
                   </div>
                   <div class="min-w-0 flex-1">
-                    <div class="flex items-center justify-between gap-1">
-                      <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-900 transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                      <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-900 transition-colors">
                         Agenda Surat Keluar
                       </h3>
                       <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-blue-800 shrink-0"></i>
@@ -416,30 +416,50 @@
                 </div>
                 <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-between text-xs">
                   <span class="lock-status inline-flex items-center gap-1 text-slate-500 font-medium">
-                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> Terkunci
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> Terkunci sebelum login
                   </span>
-                  <span class="font-semibold text-slate-700 group-hover:text-blue-900">Buka &rarr;</span>
+                  <span class="font-semibold text-slate-700 group-hover:text-blue-900">Buka Aplikasi &rarr;</span>
                 </div>
               </a>
 
-              <!-- Aplikasi 5: Generator Soal (SELALU AKTIF SEBELUM LOGIN) -->
+            </div>
+          </div>
+
+          <!-- Kelompok C: Generator Soal -->
+          <div class="bg-white/90 backdrop-blur rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-amber-500 to-blue-800"></span>
+                <div>
+                  <h2 class="text-base sm:text-lg font-bold text-slate-900">Generator Soal</h2>
+                  <p class="text-xs text-slate-500">Perangkat penyusunan naskah Ulangan Harian dan Asesmen Sumatif sekolah</p>
+                </div>
+              </div>
+              <span id="badge-role-3" class="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                Terbuka Publik
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <!-- Aplikasi 5: Generator Soal UH (SELALU AKTIF SEBELUM LOGIN) -->
               <a
                 id="card-generator-soal"
                 data-module="generator-soal"
                 href="https://sdnkapuk01.github.io/generator-soal/"
                 target="_blank"
                 rel="noopener noreferrer"
-                onclick="handleModuleLaunch(event, 'Generator Soal', 'generator-soal', 'https://sdnkapuk01.github.io/generator-soal/')"
-                class="module-card group relative flex flex-col justify-between rounded-2xl p-4 sm:p-5 border border-amber-300 bg-gradient-to-br from-amber-50/90 via-white to-sky-50/80 hover:border-amber-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                onclick="handleModuleLaunch(event, 'Generator Soal UH', 'generator-soal', 'https://sdnkapuk01.github.io/generator-soal/')"
+                class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-amber-300 bg-gradient-to-br from-amber-50/90 via-white to-sky-50/80 hover:border-amber-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div class="flex items-start gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-600 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                <div class="flex items-start gap-3.5">
+                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-600 to-blue-800 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                     <i data-lucide="file-text" class="w-5 h-5"></i>
                   </div>
                   <div class="min-w-0 flex-1">
-                    <div class="flex items-center justify-between gap-1">
-                      <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-amber-800 transition-colors">
-                        Generator Soal
+                    <div class="flex items-center justify-between gap-2">
+                      <h3 class="text-base font-bold text-slate-900 group-hover:text-amber-800 transition-colors">
+                        Generator Soal UH
                       </h3>
                       <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-amber-700 shrink-0"></i>
                     </div>
@@ -452,7 +472,41 @@
                   <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold">
                     <i data-lucide="unlock" class="w-3.5 h-3.5"></i> Bebas Akses
                   </span>
-                  <span class="font-semibold text-amber-800 group-hover:text-amber-900">Buka &rarr;</span>
+                  <span class="font-semibold text-amber-800 group-hover:text-amber-900">Buka Aplikasi &rarr;</span>
+                </div>
+              </a>
+
+              <!-- Aplikasi 6: Generator Soal Sumatif (SELALU AKTIF SEBELUM LOGIN) -->
+              <a
+                id="card-generator-soal-sumatif"
+                data-module="generator-soal-sumatif"
+                href="https://sdnkapuk01.github.io/generator-soal-assd/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick="handleModuleLaunch(event, 'Generator Soal Sumatif', 'generator-soal-sumatif', 'https://sdnkapuk01.github.io/generator-soal-assd/')"
+                class="module-card group relative flex flex-col justify-between rounded-2xl p-5 border border-sky-300 bg-gradient-to-br from-sky-50/90 via-white to-amber-50/70 hover:border-sky-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div class="flex items-start gap-3.5">
+                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-800 to-amber-600 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-800 transition-colors">
+                        Generator Soal Sumatif
+                      </h3>
+                      <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-blue-700 shrink-0"></i>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                      Penyusunan naskah Asesmen Sumatif Sekolah Dasar (ASSD) terstruktur sesuai kisi-kisi pada kertas Folio.
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-sky-200/70 flex items-center justify-between text-xs">
+                  <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold">
+                    <i data-lucide="unlock" class="w-3.5 h-3.5"></i> Bebas Akses
+                  </span>
+                  <span class="font-semibold text-blue-800 group-hover:text-blue-900">Buka Aplikasi &rarr;</span>
                 </div>
               </a>
 
@@ -538,7 +592,7 @@
 
             <div class="mb-4 rounded-xl bg-amber-50/90 border border-amber-200/80 p-3 text-xs text-amber-900 flex items-start gap-2">
               <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
-              <span>Sebelum login, hanya kartu pintasan <strong>Generator Soal</strong> yang dapat diakses.</span>
+              <span>Sebelum login, hanya modul <strong>Generator Soal</strong> yang dapat diakses.</span>
             </div>
 
             <form id="login-form" onsubmit="submitPortalLogin(event)" class="space-y-3.5">
@@ -805,6 +859,7 @@
       const loginView = document.getElementById('auth-login-view');
       const profileView = document.getElementById('auth-profile-view');
       const cards = document.querySelectorAll('.module-card');
+      const publicModules = ['generator-soal', 'generator-soal-sumatif'];
 
       if (!session) {
         // Status Header
@@ -820,14 +875,14 @@
         // Badge kelompok modul
         badge1.textContent = 'Terkunci (Login Diperlukan)';
         badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200';
-        badge2.textContent = 'Generator Soal Terbuka Publik';
-        badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
+        badge2.textContent = 'Terkunci (Login Diperlukan)';
+        badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200';
 
-        // Nonaktifkan semua kartu kecuali generator-soal
+        // Nonaktifkan semua kartu kecuali modul Generator Soal
         cards.forEach((card) => {
           const modKey = card.getAttribute('data-module');
           const lockLabel = card.querySelector('.lock-status');
-          if (modKey === 'generator-soal') {
+          if (publicModules.includes(modKey)) {
             card.classList.remove('opacity-50', 'pointer-events-none', 'grayscale', 'select-none');
           } else {
             card.classList.add('opacity-50', 'pointer-events-none', 'grayscale', 'select-none');
@@ -864,7 +919,7 @@
       cards.forEach((card) => {
         const modKey = card.getAttribute('data-module');
         const lockLabel = card.querySelector('.lock-status');
-        if (modKey === 'generator-soal' || isAllAllowed || allowed.includes(modKey)) {
+        if (publicModules.includes(modKey) || isAllAllowed || allowed.includes(modKey)) {
           card.classList.remove('opacity-50', 'pointer-events-none', 'grayscale', 'select-none');
           if (lockLabel) {
             lockLabel.innerHTML = '<i data-lucide="unlock" class="w-3.5 h-3.5 text-emerald-600"></i> <span class="text-emerald-700 font-semibold">Aktif</span>';
@@ -887,7 +942,7 @@
         userRoleEl.textContent = 'Operator / Staf TU (Sesi 12 Jam)';
         badge1.textContent = 'Operator (Sesuai Wewenang Modul)';
         badge1.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
-        badge2.textContent = 'Operator (Input Agenda & Soal)';
+        badge2.textContent = 'Operator (Input Agenda)';
         badge2.className = 'self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200';
       } else {
         userRoleEl.textContent = 'Viewer / Pimpinan (Read-Only)';
@@ -903,9 +958,10 @@
     // Mencatat navigasi saat pengguna membuka salah satu aplikasi
     function handleModuleLaunch(event, moduleName, moduleKey, url) {
       const session = getActiveSession();
+      const publicModules = ['generator-soal', 'generator-soal-sumatif'];
 
-      // Izinkan Generator Soal dibuka tanpa login
-      if (!session && moduleKey !== 'generator-soal') {
+      // Izinkan modul Generator Soal dibuka tanpa login
+      if (!session && !publicModules.includes(moduleKey)) {
         event.preventDefault();
         document.getElementById('login-username').focus();
         showToast('Akses Terkunci', 'Silakan login pada kolom sebelah kanan untuk membuka modul ini.', 'warning');
